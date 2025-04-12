@@ -1,0 +1,52 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+localenv/
+venv/
+.env/
+.env.*  # optional: env vars for local/dev
+
+# macOS files
+.DS_Store
+
+# Editor-specific files
+.vscode/
+.idea/
+*.swp
+
+# Flask-related
+instance/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# PostgreSQL dump
+*.sql
+
+# Pytest / coverage
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache/
+pytest_cache/
+.pytest_cache/
+
+# Pylint/mypy
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Jupyter notebooks (if any)
+.ipynb_checkpoints/`

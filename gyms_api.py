@@ -1,9 +1,9 @@
 import os
 import psycopg2
-from flask import Flask, jsonify, request
+from flask import Blueprint, jsonify, request
 from datetime import datetime
 
-app = Flask(__name__)
+gyms_api_app = Blueprint('gyms_api_app', __name__)
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -12,7 +12,7 @@ def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
     return conn
 
-@app.route('/gyms', methods=['GET'])
+@gyms_api_app.route('/gyms', methods=['GET'])
 def get_gyms():
     conn = None
     try:

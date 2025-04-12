@@ -1,20 +1,16 @@
-import os, sys
+import os
+from flask import Flask
 
-from flask import Flask, jsonify, request
-
-from gyms_api import app as gyms_api_app
-
+from gyms_api import gyms_api_app
 
 app = Flask(__name__)
-
 app.register_blueprint(gyms_api_app, url_prefix="/")
 
 @app.route("/")
 def hello_world():
-  """Example Hello World route."""
-  name = os.environ.get("NAME", "World")
-  return f"Hello {name}!"
-  
+    name = os.environ.get("NAME", "World")
+    return f"Hello {name}!"
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 9000))
     app.run(debug=True, host="0.0.0.0", port=port)
