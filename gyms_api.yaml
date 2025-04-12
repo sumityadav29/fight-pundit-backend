@@ -1,0 +1,258 @@
+openapi: 3.0.0
+info:
+  title: FightPundit Gym Management API
+  version: v1
+paths:
+  /gyms:
+    get:
+      summary: Get a list of all gyms
+      description: Retrieve a list of all gyms, with optional filtering and pagination.
+      parameters:
+        - in: query
+          name: city
+          schema:
+            type: string
+          description: Filter gyms by city.
+        - in: query
+          name: state
+          schema:
+            type: string
+          description: Filter gyms by state.
+        - in: query
+          name: country
+          schema:
+            type: string
+          description: Filter gyms by country.
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Filter gyms by name.
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination.
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of gyms per page.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Gym'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new gym
+      description: Create a new gym (requires admin/gym owner role).
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GymInput'
+      responses:
+        '201':
+          description: Gym created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+  /gyms/{gym_id}:
+    get:
+      summary: Get details of a specific gym
+      description: Retrieve details of a specific gym by its ID.
+      parameters:
+        - in: path
+          name: gym_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the gym to retrieve.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+        '404':
+          description: Gym not found
+        '500':
+          description: Internal server error
+    put:
+      summary: Update a gym's details
+      description: Update a gym's details (requires admin/gym owner role).
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: gym_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the gym to update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GymInput'
+      responses:
+        '200':
+          description: Gym updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gym'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Gym not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a gym
+      description: Delete a gym (requires admin/gym owner role).
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: gym_id
+          schema:
+            type: integer
+          required: true
+          description: ID of the gym to delete.
+      responses:
+        '204':
+          description: Gym deleted
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Gym not found
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    Gym:
+      type: object
+      properties:
+        gym_id:
+          type: integer
+          description: Unique identifier for each gym.
+        name:
+          type: string
+          description: Name of the gym.
+        description:
+          type: string
+          description: Description of the gym.
+        address:
+          type: string
+          description: Street address.
+        city:
+          type: string
+          description: City where the gym is located.
+        state:
+          type: string
+          description: State where the gym is located.
+        country:
+          type: string
+          description: Country where the gym is located.
+        zip_code:
+          type: string
+          description: Zip code of the gym.
+        contact_email:
+          type: string
+          format: email
+          description: Contact email for the gym.
+        contact_phone:
+          type: string
+          description: Contact phone number for the gym.
+        website_url:
+          type: string
+          format: URL
+          description: Website URL.
+        logo_url:
+          type: string
+          format: URL
+          description: URL to the gym's logo.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of gym creation.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of last modification.
+    GymInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the gym.
+        description:
+          type: string
+          description: Description of the gym.
+        address:
+          type: string
+          description: Street address.
+        city:
+          type: string
+          description: City where the gym is located.
+        state:
+          type: string
+          description: State where the gym is located.
+        country:
+          type: string
+          description: Country where the gym is located.
+        zip_code:
+          type: string
+          description: Zip code of the gym.
+        contact_email:
+          type: string
+          format: email
+          description: Contact email for the gym.
+        contact_phone:
+          type: string
+          description: Contact phone number for the gym.
+        website_url:
+          type: string
+          format: URL
+          description: Website URL.
+        logo_url:
+          type: string
+          format: URL
+          description: URL to the gym's logo.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
