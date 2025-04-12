@@ -2,12 +2,12 @@ import os, sys
 
 from flask import Flask, jsonify, request
 
-from gyms_api import gyms_app
+from gyms_api import app as gyms_api_app
 
 
 app = Flask(__name__)
 
-app.register_blueprint(gyms_app, url_prefix="/")
+app.register_blueprint(gyms_api_app, url_prefix="/")
 
 @app.route("/")
 def hello_world():
